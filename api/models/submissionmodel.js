@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const submissionSchema = mongoose.Schema({
 
     _id: mongoose.Schema.Types.ObjectId,
-    name: {type: String, required: true},
+    title: {type: String, required: true},
     email: {type: String, required: true},
     timestamp: {type: String, required: true},
     img_url: {type: String, required: false},

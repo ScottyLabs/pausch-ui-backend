@@ -3,6 +3,8 @@ const app = express();
 const morgan = require('morgan');
 const bodyPasser = require('body-parser');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
 mongoose.connect('mongodb+srv://htbUser:htbPassword@htbcluster.k0m6z.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
         useNewUrlParser: true

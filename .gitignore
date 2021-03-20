@@ -1,1 +1,4 @@
 /node_modules/
+/api/services/credentials.json
+/api/services/token.json
+/.env
