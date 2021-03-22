@@ -1,12 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const mongoose = require("mongoose")
 const multer = require("multer")
 const Drive = require("../services/drive")
-const stream = require("stream")
+const { Readable } = require("stream")
 const Submission = require("../models/submissionmodel")
-
-const upload = multer()
 
 //Get submissions end point
 router.get("/", (req, res, next) => {
@@ -24,12 +21,15 @@ router.get("/", (req, res, next) => {
 })
 
 //Post submissions end point
-router.post("/new", upload.single("img"), async (req, res) => {
-  let fileObject = req.file
-  let bufferStream = new stream.PassThrough()
-  bufferStream.end(fileObject.buffer)
+router.post("/new", async (req, res) => {
+  const { img, title, email, author, frame_rate, soundtrack_url } = req.body
+  
+  const buffer = Buffer.from(img, "base64")
+  const bufferStream = new Readable()
+  bufferStream._read = () => {};
+  bufferStream.push(buffer);
+  bufferStream.push(null);
 
-  const { title, email, author, frame_rate, soundtrack_url } = req.body
   const imgName = `${title}_${email}_${frame_rate}.png`
 
   try {
@@ -47,11 +47,13 @@ router.post("/new", upload.single("img"), async (req, res) => {
       await submission.save();
       res.json(submission);
     } catch (err) {
+      console.error(err);
       res.status(500).json({
         message: "An error occured while saving to the database"
       })
     }
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       message: "Unknown error occured while uploading submission to gallery",
     })
