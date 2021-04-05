@@ -30,7 +30,7 @@ router.post("/new", async (req, res) => {
   bufferStream.push(buffer);
   bufferStream.push(null);
 
-  const imgName = `${title}_${email}_${frame_rate}.png`
+  const imgName = `${title}_${author}_${email}_${frame_rate}.png`
 
   try {
     const file = await Drive.sendImgToDrive(imgName, bufferStream)
